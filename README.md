@@ -1,6 +1,16 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+This is a simple Next.js project set up to make API calls and redirects for [Daimo Pay](https://pay.daimo.com).
 
-## Getting Started
+See [./src/app/ns-food](./src/app/ns-food/) for an API call + Redirect:
+
+URLs look like `https://daimo-pay-redirect.vercel.app/ns-food/?apiKey=[INSERT_API_KEY]&usd=[INSERT USD COST]&selectedItems=[INSERT FILLOUT PICTURE CHOICE INPUT]`.
+
+To add or change checkout display items, edit [items.json](./src/app/ns-food/items.json).
+
+To add or change destination, see [page.tsx](./src/app/ns-food/page.tsx).
+
+We are happy to accept any changes or PRs.
+
+## Dev
 
 First, run the development server:
 
