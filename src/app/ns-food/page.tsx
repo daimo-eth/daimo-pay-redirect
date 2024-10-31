@@ -18,8 +18,9 @@ export default async function GenerateAndRedirect(
   const usd = searchParams["usd"];
   const selectedItemsStr = searchParams["selectedItems"];
   const mealPlanStr = searchParams["mealPlan"];
+  const isTest = searchParams["isTest"];
 
-  const usdcAmount = parseUnits(usd, recipientToken.decimals);
+  const usdcAmount = parseUnits(usd, recipientToken.decimals) / (isTest ? BigInt(100) : BigInt(1));
   const mealPlan = decodeURIComponent(mealPlanStr);
   const daimoPayDisplayItems: typeof items[number][] = [];
 
