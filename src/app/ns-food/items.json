@@ -28,5 +28,13 @@
     "name": "Additional Protein",
     "description": "",
     "image": "https://images.fillout.com/orgid-96448/flowpublicid-1To5FFMi1Vus/widgetid-kB589Eq8eJV7J1ShuBb81d/q5t1vTGb92WpgwxuU49BxZ/protien.jpg"
+  },
+  {
+    "name": "Basic Meal Plan",
+    "description": "Food Credits"
+  },
+  {
+    "name": "Pro Meal Plan",
+    "description": "Food Credits"
   }
 ]

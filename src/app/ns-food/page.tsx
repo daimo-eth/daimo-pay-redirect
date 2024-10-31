@@ -17,15 +17,31 @@ export default async function GenerateAndRedirect(
   const apiKey = searchParams["apiKey"];
   const usd = searchParams["usd"];
   const selectedItemsStr = searchParams["selectedItems"];
+  const mealPlanStr = searchParams["mealPlan"];
 
   const usdcAmount = parseUnits(usd, recipientToken.decimals);
-  const selectedItems = decodeURIComponent(selectedItemsStr).split(",").map(item => items.find(i => item.toLowerCase().trim().startsWith(i.name.toLowerCase())));
+  const mealPlan = decodeURIComponent(mealPlanStr);
+  const daimoPayDisplayItems: typeof items[number][] = [];
 
-  if (!apiKey || !usd || !selectedItemsStr) {
-    throw new Error("apiKey, usd and selectedItems are required");
+  if (selectedItemsStr && selectedItemsStr.length > 0) {
+    const selectedItems = decodeURIComponent(selectedItemsStr).split(",").map(item => items.find(i => item.toLowerCase().trim().startsWith(i.name.toLowerCase())));
+    if (selectedItems) {
+      daimoPayDisplayItems.push(...selectedItems.filter(item => item !== undefined));
+    }
   }
 
-  console.log(`selectedItems: ${JSON.stringify(selectedItems)}`);
+  if (mealPlan && mealPlan.length > 0) {
+    const mealPlanItem = items.find(i => mealPlan.toLowerCase().startsWith(i.name.split(" ")[0].toLowerCase()));
+    if (mealPlanItem) {
+      daimoPayDisplayItems.push(mealPlanItem);
+    }
+  }
+
+  if (!apiKey || !usd || !daimoPayDisplayItems) {
+    throw new Error("apiKey, usd and selectedItems or mealPlan are required");
+  }
+
+  console.log(`daimoPayDisplayItems: ${JSON.stringify(daimoPayDisplayItems)}`);
 
   const response = await fetch('https://pay.daimo.com/api/generate', {
     method: 'POST',
@@ -36,7 +52,7 @@ export default async function GenerateAndRedirect(
     },
     body: JSON.stringify({
       intent: `Pay Network School`,
-      items: selectedItems,
+      items: daimoPayDisplayItems,
       recipient: {
         address: networkSchoolAddress,
         amount: usdcAmount.toString(),
