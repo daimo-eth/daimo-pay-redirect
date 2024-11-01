@@ -19,6 +19,7 @@ export default async function GenerateAndRedirect(
   const selectedItemsStr = searchParams["selectedItems"];
   const mealPlanStr = searchParams["mealPlan"];
   const isTest = searchParams["isTest"];
+  const submissionId = searchParams["submissionId"];
 
   const usdcAmount = parseUnits(usd, recipientToken.decimals) / (isTest ? BigInt(100) : BigInt(1));
   const mealPlan = decodeURIComponent(mealPlanStr);
@@ -38,8 +39,8 @@ export default async function GenerateAndRedirect(
     }
   }
 
-  if (!apiKey || !usd || !daimoPayDisplayItems) {
-    throw new Error("apiKey, usd and selectedItems or mealPlan are required");
+  if (!apiKey || !usd || !daimoPayDisplayItems || !submissionId) {
+    throw new Error("apiKey, usd, submissionId and selectedItems or mealPlan are required");
   }
 
   console.log(`daimoPayDisplayItems: ${JSON.stringify(daimoPayDisplayItems)}`);
@@ -48,10 +49,14 @@ export default async function GenerateAndRedirect(
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Idempotency-Key': crypto.randomUUID(),
+      'Idempotency-Key': submissionId,
       'Api-Key': apiKey,
     },
     body: JSON.stringify({
+      style: {
+        background: "",
+      },
+      orgLogo: "https://daimo-pay-redirect.vercel.app/ns.svg",
       intent: `Pay Network School`,
       items: daimoPayDisplayItems,
       recipient: {
