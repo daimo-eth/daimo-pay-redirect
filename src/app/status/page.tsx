@@ -1,5 +1,6 @@
 'use client';
 
+import { Suspense } from 'react';
 import { writeDaimoPayOrderID } from "@daimo/common";
 import { hexToBigInt, keccak256 } from "viem";
 import { useSearchParams } from 'next/navigation';
@@ -20,7 +21,7 @@ function generateOrderId(idempotencyKey: string, apiKey: string) {
   return hexToBigInt(keccak256(new Uint8Array(id)));
 }
 
-export default function StatusPage() {
+function StatusPageContent() {
   const searchParams = useSearchParams();
   const [status, setStatus] = useState<StatusResponse | null>(null);
   const [loading, setLoading] = useState(true);
@@ -150,5 +151,17 @@ export default function StatusPage() {
         )}
       </div>
     </div>
+  );
+}
+
+export default function StatusPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
+      </div>
+    }>
+      <StatusPageContent />
+    </Suspense>
   );
 }
