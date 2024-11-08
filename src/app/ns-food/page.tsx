@@ -57,7 +57,7 @@ export default async function GenerateAndRedirect(
         background: "",
       },
       orgLogo: "https://daimo-pay-redirect.vercel.app/ns.svg",
-      intent: `Pay Network School`,
+      intent: `Pay Network School Food`,
       items: daimoPayDisplayItems,
       recipient: {
         address: networkSchoolAddress,
